@@ -1,0 +1,87 @@
+[bar]
+outputs = ["HDMI-A-1"]
+position = "top"
+size = 30
+border_radius = 0
+background_opacity = 0.92
+
+[widgets]
+left = ["custom-os", "window_title" ]
+center = ["workspaces"]
+right = [
+  "gpu",
+  "network_speed",
+]
+border_radius = 10
+background_opacity = 1
+# popover_background_opacity = 0.9  # Override popover opacity (default: max of bar and widget opacity)
+outline = true                    # Override theme.outline for widgets (omit = inherit)
+
+[widgets.custom-os]
+image = "/etc/xdg/assets/icon/NixOS_logo.svg"
+on_click = "walker"
+outline_color = "subtle"  # Per-widget outline color: "subtle" | "accent" | "foreground" | "#rrggbb"
+
+[widgets.window_title]
+template = "{app}"
+icon_size = 25
+uppercase = false
+
+
+
+[widgets.workspaces]
+label_type = "index"
+show_unoccupied = true
+animate = false
+
+
+[widgets.gpu]
+outline_color = "subtle"
+
+[widgets.network_speed]
+outline_color = "subtle"
+
+
+[widgets.tray]
+disabled = true
+
+
+[widgets.battery]
+disabled = true
+
+# See documentation for all widget options.
+
+[theme]
+mode = "gtk" # "auto", "dark", "light", "gtk"
+#               "auto" = wallpaper-adaptive theming
+shadows = false               #(detects from hyprpaper, awww/swww, wpaperd, waypaper)
+scheme = "dark" # Material You polarity: "dark", "light", or "gtk" (auto mode only)
+#                  "gtk" follows your GTK/system dark or light preference;
+#                  if no preference is set, it's derived from wallpaper luminance
+#accent = "#adabe0" # "gtk", "none", or hex color (overrides wallpaper accent in auto mode)
+animations = false  # Enable/disable all CSS transitions and animations
+#ripple = true      # Enable/disable Material Design ripple effect on click
+blur = false       # Enable compositor blur via ext-background-effect-v1 (requires niri with blur)
+#outline = false             # Decorative outline on bar, widgets, and surfaces (CSS border)
+#outline_width = 1           # Outline width in pixels (0..=4; 0 disables visibly)
+outline_color = "foreground"    # "subtle" | "accent" | "foreground" | "#rrggbb"
+#outline_opacity = 1.0        # 0.0 = transparent, 1.0 = opaque
+
+[theme.typography]
+font_family = "JetBrainsMono Nerd Font" # Empty string inherits the system font
+# font_scale = 0.6          # Text size as a multiplier of widget height
+
+[theme.icons]
+theme = "gtk"
+
+[osd]
+enabled = true
+position = "bottom"
+show_value = false  # Show current value after the bar
+
+[audio]
+allow_overdrive = false
+
+[advanced]
+compositor = "auto"
+

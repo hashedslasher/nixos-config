@@ -1,0 +1,109 @@
+[bar]
+outputs = ["DP-1"]
+position = "top"
+size = 30
+border_radius = 0
+background_opacity = 0.92
+
+[widgets]
+left = ["custom-os", "window_title", "spacer:30", "media"]
+center = ["workspaces"]
+right = [
+  "custom-weather",
+  "cpu",
+  "memory",
+  "quick_settings",
+  "clock",
+]
+border_radius = 10
+background_opacity = 1
+# popover_background_opacity = 0.9  # Override popover opacity (default: max of bar and widget opacity)
+outline = true                    # Override theme.outline for widgets (omit = inherit)
+
+[widgets.custom-os]
+image = "/etc/xdg/assets/icon/NixOS_logo.svg"
+on_click = "walker"
+outline_color = "subtle"  # Per-widget outline color: "subtle" | "accent" | "foreground" | "#rrggbb"
+
+[widgets.window_title]
+template = "{app}"
+icon_size = 25
+uppercase = false
+
+[widgets.media]
+template = "{art}{artist} - {title}"
+visualizer = false
+max_chars = 50
+
+
+[widgets.workspaces]
+label_type = "index"
+show_unoccupied = true
+animate = false
+
+
+[widgets.cpu]
+outline_color = "subtle"
+
+[widgets.memory]
+outline_color = "subtle"
+
+[widgets.tray]
+disabled = true
+
+[widgets.quick_settings]
+idle_inhibitor = false
+updates = false
+outline_color = "subtle"
+
+[widgets.clock]
+format = "%a %d %H:%M"
+outline_color = "subtle"
+
+[widgets.battery]
+disabled = false
+
+
+[widgets.custom-weather]
+exec = "curl -s 'wttr.in/?format=1'"
+template = " {output}"
+interval = 600
+tooltip = "Weather"
+max_chars = 30
+#
+# See documentation for all widget options.
+
+[theme]
+mode = "gtk" # "auto", "dark", "light", "gtk"
+#               "auto" = wallpaper-adaptive theming
+shadows = false               #(detects from hyprpaper, awww/swww, wpaperd, waypaper)
+scheme = "dark" # Material You polarity: "dark", "light", or "gtk" (auto mode only)
+#                  "gtk" follows your GTK/system dark or light preference;
+#                  if no preference is set, it's derived from wallpaper luminance
+#accent = "#adabe0" # "gtk", "none", or hex color (overrides wallpaper accent in auto mode)
+animations = false  # Enable/disable all CSS transitions and animations
+#ripple = true      # Enable/disable Material Design ripple effect on click
+blur = false       # Enable compositor blur via ext-background-effect-v1 (requires niri with blur)
+#outline = false             # Decorative outline on bar, widgets, and surfaces (CSS border)
+#outline_width = 1           # Outline width in pixels (0..=4; 0 disables visibly)
+outline_color = "foreground"    # "subtle" | "accent" | "foreground" | "#rrggbb"
+#outline_opacity = 1.0        # 0.0 = transparent, 1.0 = opaque
+
+[theme.typography]
+font_family = "JetBrainsMono Nerd Font" # Empty string inherits the system font
+font_scale = 0.7          # Text size as a multiplier of widget height
+
+[theme.icons]
+theme = "gtk"
+
+[osd]
+enabled = true
+position = "bottom"
+show_value = false  # Show current value after the bar
+
+[audio]
+allow_overdrive = false
+
+[advanced]
+compositor = "auto"
+

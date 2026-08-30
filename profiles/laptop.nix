@@ -1,0 +1,74 @@
+{ config, lib, pkgs, pkgs-stable, pkgs-unstable, ... }:
+{
+  imports = [
+    ../config/apps
+    ../config/modules
+    ../bin
+  ];
+  
+  apps = {
+    vibepanel.enable = true;
+    kodi.enable = true;
+    mango.enable = true;
+    neovim.enable = true;
+    plymouth.enable = true;
+    sddm.enable = true;
+    thunar.enable = true;
+    walker.enable = true;
+  };
+  
+  modules = {
+    audio = {
+      base.enable = true;
+      advanced.enable = true;
+    };
+    
+    bluetooth.enable = true;
+    
+    graphics.enable = true;
+    
+    networking = {
+      enable = true;
+      vpn.enable = true;
+    };
+    
+    virtualization = {
+      virt-manager.enable = true;
+      podman.enable = true;
+    };
+  };
+  
+  programs.brave-origin-nightly.enable = true;
+  
+  environment.systemPackages = with pkgs; [
+    #Apps
+    mpv
+    wezterm
+    resources
+  
+    #Utils
+    bindfs
+    grim
+    slurp
+    playerctl
+    wlr-randr
+    ripgrep
+    wl-clipboard
+    lm_sensors
+    sysstat
+  ];
+
+  environment.persistence."/persist" = {
+    directories = [
+      "/etc/mullvad-vpn"
+      {
+        directory = "/var/lib/colord";
+        user = "colord";
+        group = "colord";
+        mode = "u=rwx,g=rx,o=";
+      }
+    ];
+    files = [
+    ];
+  };
+}

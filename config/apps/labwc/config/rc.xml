@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<labwc_config>
+  <keyboard>
+    <default />
+    <keybind key="W-Return">
+      <action name="Execute" command="walker --modules applications" />
+    </keybind>
+  </keyboard>
+  <theme>
+    <titlebar>
+      <layout>icon:iconify,max,close</layout>
+      <showTitle>no</showTitle>
+    </titlebar>
+    <cornerRadius>0</cornerRadius>
+    <font name="BlexMono Nerd Font">
+      <size>12</size>
+    </font>
+    <name></name>
+  </theme>
+
+</labwc_config>

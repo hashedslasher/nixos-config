@@ -1,0 +1,46 @@
+:root
+  .workspace-indicator {
+    color: rgba(58, 58, 58, 0.7);
+    font-size: 18px;
+  }
+  .workspace-indicator.active {
+      color: @theme_selected_fg_colr; 
+      background-color: transparent;
+  }
+  
+  .workspace-indicator.occupied {
+      color: gray
+  }
+  
+  .window-title {
+    --widget-background-opacity: 0%;
+   --widget-outline-opacity: 0%;
+  }
+  
+  .media {
+      --widget-background-opacity: 0%;
+      --widget-outline-opacity: 0%;
+  }
+  
+  .custom-weather {
+      --widget-background-opacity: 0%;
+      --widget-outline-opacity: 0%;
+  }
+  
+  .custom-os image {
+    transform: scale(1.5);
+  }
+
+  .window-title-app-icon {
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  .window-title label {
+      font-size: 16px;
+  }
+  
+}
+
+
+
+
