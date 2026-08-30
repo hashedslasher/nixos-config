@@ -4,6 +4,7 @@
   inputs,
   lib,
   rehomify,
+  ylib,
   ...
 }:
 {
@@ -11,7 +12,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../disk/btrfs-impermanence.nix
-    ../../profiles/laptop.nix
+    ../../profiles/laptop-1.nix
   ] ++ ylib.umport {
     paths = [
       ../../config/modules
@@ -19,6 +20,15 @@
     ];
     recursive = false;
   };
+  imports = [
+    ./hardware-configuration.nix
+    ../../disk/btrfs-impermanence.nix
+    
+    ../../config/modules
+    ../../bin
+
+    ../../profiles/laptop.nix
+  ];
 
   sops.secrets.layton-password.neededForUsers = true;
   users.users.layton = {
