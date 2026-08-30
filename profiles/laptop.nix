@@ -42,6 +42,10 @@
     };
   };
   
+  programs.zsh = {
+    enable = true;
+  };
+  
   programs.brave-origin-nightly.enable = true;
   
   environment.systemPackages = with pkgs; [
@@ -49,6 +53,8 @@
     mpv
     wezterm
     resources
+    git
+
   
     #Utils
     bindfs
