@@ -12,7 +12,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../disk/btrfs-impermanence.nix
-    ../../profiles/laptop-1.nix
+    ../../profiles/laptop.nix
   ] ++ ylib.umport {
     paths = [
       ../../config/modules
