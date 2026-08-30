@@ -1,10 +1,14 @@
 { config, lib, pkgs, pkgs-stable, pkgs-unstable, ... }:
 {
-  imports = [
-    ../config/apps
-    ../config/modules
-    ../bin
-  ];
+
+
+  imports = ylib.umport {
+    paths = [
+      ../config/modules
+      ../config/apps
+    ];
+    recursive = false;
+  };
   
   apps = {
     vibepanel.enable = true;

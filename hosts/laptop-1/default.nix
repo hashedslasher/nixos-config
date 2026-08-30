@@ -7,15 +7,18 @@
   ...
 }:
 {
+
   imports = [
     ./hardware-configuration.nix
     ../../disk/btrfs-impermanence.nix
-    
-    ../../config/modules
-    ../../bin
-
     ../../profiles/laptop.nix
-  ];
+  ] ++ ylib.umport {
+    paths = [
+      ../../config/modules
+      ../../config/apps
+    ];
+    recursive = false;
+  };
 
   sops.secrets.layton-password.neededForUsers = true;
   users.users.layton = {
@@ -23,7 +26,8 @@
     isNormalUser = true;
     isAdminUser = true;
     homeActivate = true;
-    hashedPasswordFile = config.sops.secrets.layton-password.path;
+    hashedPassword = "$6$QFUo3vQDfJwjRXOb$65bJI4qOxKddTIsrXvSJcvQKhz9FlxI7v7aBtPSkgi6zsfNdlb6SDK622s5e8YXFcVAWGfFWLwNonfVuue4jU.";
+    #hashedPasswordFile = config.sops.secrets.layton-password.path;
     extraGroups = [
       "networkmanager"
       "qemu"
