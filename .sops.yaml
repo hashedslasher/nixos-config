@@ -1,0 +1,11 @@
+keys:
+  - &users:
+    - &layton age1wg2pr6d8jsfh5yw9vaevw8xcnzajpqyansezqe7ff64j7dy3c9fsc3tkd5
+  - &hosts:
+    - &desktop age1srplhj9kwqqqqdphc8vh70whl7yegaa3txzx5s94nkptfl62f59sw0ssst
+creation_rules:
+  - path_regex: secrets/secrets.yaml$
+    key_groups:
+    - age:
+      - *layton
+      - *desktop
