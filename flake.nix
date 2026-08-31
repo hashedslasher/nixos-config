@@ -8,8 +8,8 @@
     nypkgs = {
       url = "github:yunfachi/nypkgs";
       inputs.nixpkgs.follows = "nixpkgs";
-    
     };
+    
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -25,10 +25,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-
     silentSDDM = {
       url = "github:uiriansan/SilentSDDM";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    
+    silentSDDM-stable = {
+      url = "github:uiriansan/SilentSDDM";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
     };
     
     rehomify.url = ./pkgs/rehomify;
@@ -42,6 +46,7 @@
       nixpkgs-stable,
       nypkgs,
       silentSDDM,
+      silentSDDM-stable,
       musnix,
       flake-utils,
       disko,
@@ -69,10 +74,6 @@
         overlays = commonOverlays;
       };
 
-      sddmTheme = silentSDDM.packages.${system}.default.override {
-        theme = "default";
-      };
-
       commonModules = [
         musnix.nixosModules.musnix
         disko.nixosModules.disko
@@ -87,13 +88,14 @@
         vibepanel.overlays.default
       ];
 
-      mkHost = { hostname, pkgs, systemBuilder }: systemBuilder {
+      mkHost = { hostname, pkgs, systemBuilder, sddmPkg }: systemBuilder {
         inherit system;
         
         pkgs = pkgs;
         
         specialArgs = {
-          inherit sddmTheme pkgs-stable pkgs-unstable inputs;
+          sddmTheme = sddmPkg.override { theme = "default"; };
+          inherit pkgs-stable pkgs-unstable inputs;
           ylib = inputs.nypkgs.lib.${system};
         };
 
@@ -110,8 +112,11 @@
         hostname = name;
         pkgs = if channel == "stable" then pkgs-stable else pkgs-unstable;
         systemBuilder = if channel == "stable"
-        then nixpkgs-stable.lib.nixosSystem
-        else nixpkgs.lib.nixosSystem;
+          then nixpkgs-stable.lib.nixosSystem
+          else nixpkgs.lib.nixosSystem;
+        sddmPkg = if channel == "stable"
+          then inputs.silentSDDM-stable.packages.${system}.default
+          else inputs.silentSDDM.packages.${system}.default;
       };
     in
     {

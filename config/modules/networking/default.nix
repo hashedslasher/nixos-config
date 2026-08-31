@@ -44,9 +44,12 @@ in
         };
       };
 
-      services.mullvad-vpn.enable = true;
-      services.mullvad-vpn.gui.enable =
-        lib.mkIf (lib.versionAtLeast nixosVersion "26.11") true;
+
+      services.mullvad-vpn = {
+        enable = true;
+      } // lib.optionalAttrs (lib.versionAtLeast nixosVersion "26.11") {
+        gui.enable = true;
+      };
     })
   ];
 }

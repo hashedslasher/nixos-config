@@ -8,7 +8,6 @@
   config = lib.mkIf config.apps.sddm.enable {
     services.displayManager = {
       defaultSession = "mango";
-      sessionPackages = [ pkgs.kdePackages.plasma-bigscreen ];
     };      
     services.displayManager.sddm = {
       enable = true;

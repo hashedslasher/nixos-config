@@ -61,7 +61,7 @@ format = "%a %d %H:%M"
 outline_color = "subtle"
 
 [widgets.battery]
-disabled = false
+disabled = true
 
 
 [widgets.custom-weather]

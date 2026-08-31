@@ -8,7 +8,7 @@
   
   config = lib.mkIf config.apps.mango.enable {
     modules.wallpaper.enable = true;
-    environment.etc."xdg/mango".source = ./config;
+    #environment.etc."xdg/mango".source = ./config;
     programs.mango = {
       enable = true;
       package = pkgs.mangowc;
