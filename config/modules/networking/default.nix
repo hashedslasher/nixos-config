@@ -4,6 +4,9 @@
   pkgs,
   ...
 }:
+let 
+  nixosVersion = pkgs.lib.version;
+in
 {
   options.modules.networking = {
     enable = lib.mkEnableOption "Enable NetworkManager";
@@ -41,10 +44,9 @@
         };
       };
 
-      services.mullvad-vpn = {
-        enable = true;
-        gui.enable = true;
-      };
+      services.mullvad-vpn.enable = true;
+      services.mullvad-vpn.gui.enable =
+        lib.mkIf (lib.versionAtLeast nixosVersion "26.11") true;
     })
   ];
 }

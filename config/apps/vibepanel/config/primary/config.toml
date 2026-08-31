@@ -1,5 +1,5 @@
 [bar]
-#outputs = ["DP-1"]
+#outputs = ["eDP-1"]
 position = "top"
 size = 30
 border_radius = 0

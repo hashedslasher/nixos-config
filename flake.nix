@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs-stable.url = "nixpkgs/nixos-25.05";
+    nixpkgs-stable.url = "nixpkgs/nixos-26.05";
     nixpkgs.url = "nixpkgs/nixos-unstable";
 
     flake-utils.url = "github:numtide/flake-utils";
@@ -87,7 +87,7 @@
         vibepanel.overlays.default
       ];
 
-      mkHost = { hostname, pkgs }: lib.nixosSystem {
+      mkHost = { hostname, pkgs, systemBuilder }: systemBuilder {
         inherit system;
         
         pkgs = pkgs;
@@ -109,6 +109,9 @@
       buildConfig = name: channel: mkHost {
         hostname = name;
         pkgs = if channel == "stable" then pkgs-stable else pkgs-unstable;
+        systemBuilder = if channel == "stable"
+        then nixpkgs-stable.lib.nixosSystem
+        else nixpkgs.lib.nixosSystem;
       };
     in
     {
