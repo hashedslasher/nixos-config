@@ -12,16 +12,10 @@ cleanup () {
 }
 trap cleanup EXIT
 
-# ==========================================
-# Phase 1: Preparation & Cloning
-# ==========================================
 whiptail --title "Initialization" --msgbox "Cloning $REPO_URL" 15 60
 rm -rf "$WORKDIR"
 git clone "$REPO_URL" "$WORKDIR"
 
-# ==========================================
-# Phase 2: Gather User Inputs
-# ==========================================
 mapfile -t hosts < <(nix eval "$WORKDIR#nixosConfigurations" --apply 'builtins.attrNames' --json | jq -r '.[]')
 
 MENU_OPTIONS=()
@@ -49,7 +43,6 @@ else
   hm_url="0"
 fi
 
-# --- SOPS / Bitwarden Setup ---
 handle_sops() {
     session_key=$(whiptail --passwordbox "Enter Bitwarden Master Password to unlock SOPS:" 15 50 3>&1 1>&2 2>&3) || return 1
     
@@ -68,9 +61,6 @@ handle_sops() {
     SOPS_YAML="$WORKDIR/.sops.yaml"
     export SOPS_AGE_KEY_FILE=/tmp/age-key.txt
     
-    # We need the host_name for SOPS extraction. 
-    # If creating a new host, we extract the generic logic or prompt for host early.
-    # To keep it simple, we use the host_choice if it exists, otherwise we wait to handle keys.
     local target_host="$host_choice"
     if [[ "$target_host" == "$CREATE_OPT" ]]; then
         target_host=$(whiptail --inputbox "Enter hostname for new host (needed for SOPS)" 8 39 --title "Hostname" 3>&1 1>&2 2>&3) || return 1
@@ -117,7 +107,6 @@ handle_sops() {
 
 IS_OWNER=false
 
-# Ask for SOPS bypass logic[cite: 1]
 if whiptail --yesno "Retrieve SOPS key? (Select No to bypass if you are installing my config)" 15 50; then
     while true; do
         if handle_sops; then
@@ -131,7 +120,6 @@ if whiptail --yesno "Retrieve SOPS key? (Select No to bypass if you are installi
     done
 fi
 
-# --- Password Setup (Only runs if SOPS was bypassed or failed) ---
 hashed_password_str=""
 
 if [[ "$IS_OWNER" == false ]]; then
@@ -153,7 +141,6 @@ if [[ "$IS_OWNER" == false ]]; then
     done
 fi
 
-# --- Disk Selection ---
 DRIVE_ARRAY=()
 while read -r name size type; do
     if [[ "$type" == "part" ]]; then
@@ -181,11 +168,7 @@ if ! whiptail --yesno "This will wipe $install_drive. Continue?" 15 50 --default
   exit 1
 fi
 
-# ==========================================
-# Phase 3: Config Generation
-# ==========================================
 create_host() {
-    # If we already asked for the hostname during SOPS, use it. Otherwise, prompt.
     if [[ -n "${PREFILLED_HOSTNAME:-}" ]]; then
         host_name="$PREFILLED_HOSTNAME"
     else
@@ -229,8 +212,6 @@ create_host() {
 
     mkdir -p "$WORKDIR/hosts/$host_name"
 
-    # Only injects the password string if it's an outsider. If it's you (SOPS owner), this remains empty
-    # so that sops-nix can map it without default.nix overriding it.
     cat <<EOF >"$WORKDIR/hosts/$host_name/default.nix"
 { config, pkgs, lib, ... }:
 {
@@ -261,7 +242,6 @@ EOF
 if [[ "$host_choice" == "$CREATE_OPT" ]]; then
   create_host
 else
-  # Using an existing host. We need to inject the disk and the outsider password if applicable.
   if [[ -n "${PREFILLED_HOSTNAME:-}" ]]; then
       host_name="$PREFILLED_HOSTNAME"
   else
@@ -271,7 +251,6 @@ else
   HOST_DIR="$WORKDIR/hosts/$host_name"
   sed -i "s|mySystem.installDisk = \".*\";|mySystem.installDisk = \"$install_drive\";|" "$HOST_DIR/default.nix"
   
-  # Inject the password for outsiders installing a pre-existing host profile
   if [[ "$IS_OWNER" == false && -n "$hashed_password_str" ]]; then
       sed -i "s|hashedPassword = \".*\";|$hashed_password_str|" "$HOST_DIR/default.nix"
   fi
@@ -283,9 +262,6 @@ nixos-generate-config --show-hardware-config --no-filesystems >"$HOST_DIR/hardwa
 
 git -C "$WORKDIR" add .
 
-# ==========================================
-# Phase 4 & 5: Format and Install
-# ==========================================
 whiptail --title "Installing" --infobox "Formatting disk with Disko..." 15 50
 sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- \
     --yes-wipe-all-disks \
@@ -297,9 +273,6 @@ mkdir -p /mnt/etc
 cp -r "$WORKDIR" "$FLAKE_DIR"
 sudo nixos-install --flake "$FLAKE_DIR#$host_name" --no-root-passwd
 
-# ==========================================
-# Phase 6: Home Manager
-# ==========================================
 if [[ "$hm_url" != "0" ]]; then
     whiptail --title "Installing" --infobox "Cloning $hm_url..." 15 50
     PERSIST_HOME="/mnt/persist/home/$user_name"
