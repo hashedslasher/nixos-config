@@ -36,7 +36,6 @@
     };
     
     rehomify.url = ./pkgs/rehomify;
-    brave-origin.url = ./pkgs/brave-origin;
   };
 
   outputs =
