@@ -53,7 +53,6 @@
       rehomify,
       mango,
       sops-nix,
-      brave-origin,
       vibepanel,
       ...
     }@inputs:
@@ -80,7 +79,6 @@
         rehomify.nixosModules.rehomify
         mango.nixosModules.mango
         sops-nix.nixosModules.sops
-        brave-origin.nixosModules.default
       ];
 
       commonOverlays = [
