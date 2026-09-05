@@ -38,7 +38,6 @@
     };
   };
   
-  programs.brave-origin-nightly.enable = true;
   
   security.rtkit.enable = true;
   
@@ -53,6 +52,7 @@
     mpv
     wezterm
     resources
+    brave-origin
   
     wget
     git

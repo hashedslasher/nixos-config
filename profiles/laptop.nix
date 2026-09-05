@@ -46,7 +46,6 @@
     enable = true;
   };
   
-  programs.brave-origin-nightly.enable = true;
   
   environment.systemPackages = with pkgs; [
     #Apps
@@ -54,6 +53,7 @@
     wezterm
     resources
     git
+    brave-origin
 
   
     #Utils
