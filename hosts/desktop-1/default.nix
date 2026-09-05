@@ -44,6 +44,7 @@
       "scanner"
       "lp"
       "lpadmin"
+      "dialout"
     ];
 
     packages = with pkgs; [

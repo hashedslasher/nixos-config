@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  pkgs-stable,
   lib,
   inputs,
   nixos-rocksmith,
@@ -13,6 +14,7 @@
   config = lib.mkIf config.modules.gaming.enable {
     programs.steam = {
       enable = true;
+      package = pkgs-stable.steam;
       extraCompatPackages = with pkgs; [
         proton-ge-bin
       ];

@@ -37,6 +37,7 @@
       "libvirtd"
       "rtkit"
       "fuse"
+      "dialout"
     ];
     packages = with pkgs; [
     ];
